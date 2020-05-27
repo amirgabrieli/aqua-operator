@@ -20,8 +20,8 @@ For advanced configurations please consult with Aqua's support team.
 Make sure you have a license and access to the Aqua registry. If you want to obtain a new license, please contact us at https://www.aquasec.com/about-us/contact-us/.
 
 ## Deploy the Aqua Operator
-1. Create a new namespace/project called 'aqua' for the Aqua deployment 
-2. Install the Aqua Operator from RH's OperatorHub and add it to the 'aqua' namespace. The Operator will create a new service-account, called 'aqua-sa' to run the Aqua application. 
+1. Create a new namespace/project called 'aqua' for the Aqua deployment.
+2. Install the Aqua Operator from RH's OperatorHub and add it to the 'aqua' namespace. The Operator will create a new service-account, called 'aqua-sa', to run the Aqua application. 
 
 ## Before You Deploy AquaCSP's Custom Resources 
 You will need to supply two secrets for the installation - 
