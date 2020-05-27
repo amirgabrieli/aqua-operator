@@ -17,7 +17,7 @@ For advanced configurations please consult with Aqua's support team.
 
   
 ## Prerequisites 
-Make sure you have a license and access to the Aqua registry. If you want to obtain a new license, please contact us at cloudsales@aquasec.com.
+Make sure you have a license and access to the Aqua registry. If you want to obtain a new license, please contact us at https://www.aquasec.com/about-us/contact-us/.
 
 ## Deploy the Aqua Operator
 1. Create a new namespace/project called 'aqua' for the Aqua deployment 
@@ -43,8 +43,6 @@ There are multiple options to deploy the AquaCSP Custome Resource. You can revie
 * The default Service type for the console and gateway is ClusterIP. Please change if you want a different Service type.
 * You can choose to install a different Aqua version by setting the 'version' property 
 	
-
-
 ## Example 
 Here is an example of a simple deployment  - 
 ```yaml
