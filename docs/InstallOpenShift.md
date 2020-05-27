@@ -78,7 +78,7 @@ spec:
 
 If you haven't used the 'route' option in the AquaCSP CR, you should define a Route manually to enable external access to Aqua's console.
 
-## Installing AquaEnforcer
+### Installing AquaEnforcer
 If you haven't deployed the enforcer yet, or if you want to deploy additional enforcers, please follow the instruction below:
 You can review the different options to implement AquaEnforcer in the following [file](https://github.com/aquasecurity/aqua-operator/blob/master/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml).
 
