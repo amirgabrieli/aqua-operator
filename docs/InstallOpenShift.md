@@ -8,21 +8,20 @@ The Aqua Security Operator is used to deploy and manage the Aqua Security platfo
 
 Use the Aqua-Operator to: 
 * Deploy the Aqua Security platform on OpenShift
-* Scale up Aqua Security components with extra replicas
+* Scale-up Aqua Security components with extra replicas
 * Assign metadata tags to Aqua Security components
 * Automatically scale the number of Aqua scanners based on the number of images in the scan queue
 	
-The Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) to manage the Aqua platform. 
-Please make sure to read the Aqua installation manual (https://docs.aquasec.com/docs) before using the Operator. 
-For advance configurations please consult with Aqua's support team.
+The Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) to manage the Aqua platform. Please make sure to read the Aqua installation manual (https://docs.aquasec.com/docs) before using the Operator. 
+For advanced configurations please consult with Aqua's support team.
 
   
-## Prerquisits 
+## Prerequisites 
 Make sure you have a license and access to the Aqua registry. If you want to obtain a new license, please contact us at cloudsales@aquasec.com.
 
-## Deploy the Aqua Opertor
+## Deploy the Aqua Operator
 1. Create a new namespace/project called 'aqua' for the Aqua deployment 
-2. Install the Aqua Operator from RH's OperatorHub and add it to the 'aqua' namespace. The Operator will create a new service-account, called 'aqua-sa' to run the Aqua applicatoin. 
+2. Install the Aqua Operator from RH's OperatorHub and add it to the 'aqua' namespace. The Operator will create a new service-account, called 'aqua-sa' to run the Aqua application. 
 
 ## Before You Deploy AquaCSP's Custom Resources 
 You will need to supply two secrets for the installation - 
@@ -40,9 +39,9 @@ There are multiple options to deploy the AquaCSP Custome Resource. You can revie
 * The AquaCSP CRD defines how to deploy the Console, Database, Scanner, and Gateway. 
 * You can instruct the AquaCSP CR to automatically deploy the Enforcer by setting the 'enforcer' and the 'enforcerMode' properties in the CR file. 
 * If you want to deploy the Enforcers manually, you will need to first get a security token.  Access Aqua console and create a new Enforcer Group. Copy the group's 'token' and use it in the AquaEnforcer CRD (see example below)
-* You can instruct the AquaCSP CR to automaticallly deploy a Route by setting the 'route' property to 'true'.
+* You can instruct the AquaCSP CR to automatically deploy a Route by setting the 'route' property to 'true'.
 * The default Service type for the console and gateway is ClusterIP. Please change if you want a different Service type.
-* You can choose to install a diffentet Aqua versoin by setting the 'version' property 
+* You can choose to install a different Aqua version by setting the 'version' property 
 	
 
 
@@ -75,11 +74,11 @@ spec:
     replicas: 1                             
     service: "ClusterIP" 
   enforcer:                                 # Optional: if defined the Operator will create the default Enforcer 
-    enforcerMode: audit                     # Defines weather the default enforcer will work in 'enforce' or 'audit' more 
+    enforcerMode: audit                     # Defines whether the default enforcer will work in 'enforce' or 'audit' more 
   route: true                               # Optional: if defines and set to true, the operator will create a Route to enable access to the console
 ```
 
-If you haven't use the Route option in the AquaCsp CRD, you should define the a Route manually to enable external access to Aqua's console.
+If you haven't use the Route option in the AquaCsp CRD, you should define a Route manually to enable external access to Aqua's console.
 
 ## Installing AquaEnforcer
 If you haven't deployed the enforcer yet, or if you want to deploy additional enforcers, please follow the instruction below:
