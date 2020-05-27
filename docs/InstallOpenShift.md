@@ -28,17 +28,17 @@ You will need to supply two secrets for the installation -
 * A secret for the Docker registry
 * A secret for the database
 
-You can list the secrets in the Custome Resources YAML files or you can define secrets in the OpenShift project (see example below) -
+You can list the secrets in the Custom Resource YAML files or you can define them in the OpenShift project (see example below) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 oc secrets add aqua-sa aqua-registry --for=pull -n aqua
 ```
-## Deploying the AquaCSP Custome Resource
-There are multiple options to deploy the AquaCSP Custome Resource. You can review the different options in the following [file](https://github.com/aquasecurity/aqua-operator/blob/master/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml).  
+## Deploying the AquaCSP Custom Resource
+There are multiple options to deploy the AquaCSP Custom Resource. You can review the different options in the following [file](https://github.com/aquasecurity/aqua-operator/blob/master/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml).  
 * The AquaCSP CRD defines how to deploy the Console, Database, Scanner, and Gateway. 
 * You can instruct the AquaCSP CR to automatically deploy the Enforcer by setting the 'enforcer' and the 'enforcerMode' properties in the CR file. 
-* If you want to deploy the Enforcers manually, you will need to first get a security token.  Access Aqua console and create a new Enforcer Group. Copy the group's 'token' and use it in the AquaEnforcer CRD (see example below)
+* If you want to deploy the Enforcers manually, you will need to first get a security token.  Access Aqua console and create a new Enforcer Group. Copy the group's 'token' and use it in the AquaEnforcer CR (see example below)
 * You can instruct the AquaCSP CR to automatically deploy a Route by setting the 'route' property to 'true'.
 * The default Service type for the console and gateway is ClusterIP. Please change if you want a different Service type.
 * You can choose to install a different Aqua version by setting the 'version' property 
@@ -76,7 +76,7 @@ spec:
   route: true                               # Optional: if defines and set to true, the operator will create a Route to enable access to the console
 ```
 
-If you haven't use the Route option in the AquaCsp CRD, you should define a Route manually to enable external access to Aqua's console.
+If you haven't used the 'route' option in the AquaCSP CR, you should define a Route manually to enable external access to Aqua's console.
 
 ## Installing AquaEnforcer
 If you haven't deployed the enforcer yet, or if you want to deploy additional enforcers, please follow the instruction below:
