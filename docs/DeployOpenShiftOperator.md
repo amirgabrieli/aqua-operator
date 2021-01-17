@@ -10,10 +10,7 @@ Use the Aqua Operator to:
 * Deploy Aqua CSP on OpenShift
 * Scale up Aqua Security components with extra replicas
 * Assign metadata tags to Aqua CSP components
-* Automatically scale the number of Aqua scanners based on the number of images in the scan queue
-	
-You can view all Aqua Operator CR options for managing the Aqua CSP platform [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/5.3.0/deploy/crds). 
-   
+	   
 ## Prerequisites 
 
 Make sure you have a license and access to the Aqua registry. To obtain a license, please contact Aqua Security at https://www.aquasec.com/about-us/contact-us/.
@@ -23,9 +20,9 @@ It is advised that you read about the [Aqua Environment and Configuration](https
 ## Deploying the Aqua Operator
 
 1. Create a new namespace/project called "aqua" for the Aqua deployment.
-2. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
+2. Install the Aqua Operator from Red Hat's OperatorHub and deploy it to the "aqua" namespace. 
 
-## Deploying the Aqua CSP custom resources
+## Prepare your environment
 First, make sure to set the requirements that are specified [here](FirstSteps.md)
 
 Before you start, you will need to supply two secrets for the deployment: 
@@ -40,7 +37,7 @@ oc secrets link aqua-sa aqua-registry --for=pull -n aqua
 ```
 
 ## AquaCSP CRDs ##
-***See the Examples section below for ready CRs for common deployment configuration***
+***You can find CR examples for common deployment configuration in the next section - CR Examples***
 
 The AquaCSP Operator includes the following CRDs -
 
