@@ -42,25 +42,25 @@ oc secrets link aqua-sa aqua-registry --for=pull -n aqua
 ## AquaCSP CRDs ##
 The AquaCSP Operator includes the following CRDs -
 
-**AquaCSP CRD** provides the fastest methods to deploy Aqua in a single cluster. AquaCSP defines how to deploy the server, Kube-Enforcer, and Enforcer in the target cluseter. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurrtions.
-* You can set the enforcement mode using the "enforcerMode" properties in the CR file.
+**[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods to deploy Aqua in a single cluster. AquaCSP defines how to deploy the server, gateway, kube-enforcer, and aqua-enforcer in the target cluseter. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurrtions.
+* You can set the enforcement mode using the "enforcerMode" property in the CR file.
 * You can deploy a Route by setting the "route" property to "true".
-* The default service type for the console and gateway is ClusterIP. You can change this to a different service type.
+* The default service type for the console and gateway is ClusterIP. You can change the service type in the CR.
 * You can choose to deploy a different version of Aqua CSP by setting the "version" property or change the image "tag".
-* You can choose to use an external databaes providing the 'externalDb' details.
+* You can choose to use an external databaes by providing the 'externalDb' property details.
 * You can omit the Enforcer and Kube-Enforcer components by removing them from the CR.
 
-**AquaKubeEnforcer CRD** is used to deploy the KubeEnforcer in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquakubeenforcer_cr.yaml) for the listing of all fields and configurrtions.
-* You need to provide a token to identify the KubeEnforcer
+**[AquaKubeEnforcer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquakubeenforcer_cr.yaml)** is used to deploy the KubeEnforcer in your target cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquakubeenforcer_cr.yaml) for the listing of all fields and configurrtions.
+* You need to provide a token to identify the KubeEnforcer to the Aqua Server
 * You can set the target gateway using the **config.gateway_address** property
 * You can choose to deploy a different version of the KubeEnforcer by setting the **image.tag** property
 
-**AquaEnforcer CRD** is used to deploy the AquaEnforcer in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml) for the listing of all fields and configurrtions.
+**[AquaEnforcer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml)** is used to deploy the AquaEnforcer in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml) for the listing of all fields and configurrtions.
 * You need to provide a token to identify the AquaEnforcer
 * You can set the target gateway using the **gateway.host** and **gateway.port** properties
 * You can choose to deploy a different version of the AquaEnforcer by setting the **image.tag** property
 
-**AquaScanner CRD** is used to deploy the AquaScanner in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquascanner_cr.yaml) for the listing of all fields and configurrtions.
+**[AquaScanner CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquascanner_cr.yaml)** is used to deploy the AquaScanner in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquascanner_cr.yaml) for the listing of all fields and configurrtions.
 * You need to set the target Aqua server using the **logic.host** property  
 * You need to provide the **login.username** and **login.password** to authnticate to the Aqua server 
 * You can choose to deploy a different version of the AquaScanner by setting the **image.tag** property
