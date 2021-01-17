@@ -40,6 +40,8 @@ oc secrets link aqua-sa aqua-registry --for=pull -n aqua
 ```
 
 ## AquaCSP CRDs ##
+***See the Examples section below for ready CRs for common deployment configuration***
+
 The AquaCSP Operator includes the following CRDs -
 
 **[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods to deploy Aqua in a single cluster. AquaCSP defines how to deploy the server, gateway, kube-enforcer, and aqua-enforcer in the target cluseter. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurrtions.
@@ -65,62 +67,12 @@ The AquaCSP Operator includes the following CRDs -
 * You need to provide the **login.username** and **login.password** to authnticate to the Aqua server 
 * You can choose to deploy a different version of the AquaScanner by setting the **image.tag** property
 
+The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for advanced configuratiosn where the server components are deployed across multiple clusters.
 
 	
-## Examples ##
-#### Example : Deploying Aqua CSP 
+## CR Examples ##
 
-Here is an example of a simple deployment: 
-```yaml
----
-apiVersion: operator.aquasec.com/v1alpha1
-kind: AquaCsp
-metadata:
-  name: aqua
-  namespace: aqua
-spec:
-  infra:                                    
-    serviceAccount: "aqua-sa"               
-    namespace: "aqua"                       
-    version: "5.3"                          
-    requirements: true                      
-  common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
-    dbDiskSize: 10
-    databaseSecret:                         # Optional: If already created database secret then mention in here
-      key: "db-password"
-      name: "aqua-database-password"      
-  database:                                 
-    replicas: 1                            
-    service: "ClusterIP"
-    image:
-      registry: "registry.aquasec.com"
-      repository: "database"
-      tag: "<<IMAGE TAG>>"
-      pullPolicy: Always                    
-  gateway:                                  
-    replicas: 1                             
-    service: "ClusterIP"
-    image:
-      registry: "registry.aquasec.com"
-      repository: "gateway"
-      tag: "<<IMAGE TAG>>"
-      pullPolicy: Always                     
-  server:                                   
-    replicas: 1                             
-    service: "LoadBalancer" 
-    image:
-      registry: "registry.aquasec.com"
-      repository: "server"
-      tag: "<<IMAGE TAG>>"
-      pullPolicy: Always  
-  route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
-```
-
-If you haven't used the "route" option in the Aqua CSP CR, you should define a Route manually to enable external access to the Aqua Server (Console).
-
-
-#### Example: Deploying AquaCsp with KubeEnforcer and Enforcer
+#### Example: Deploying Aqua Server with KubeEnforcer and Enforcer (all in one CR)
 
 Here is an example of a AquaCsp deployment with KubeEnforcer + Enforcer: 
 ```yaml
@@ -173,6 +125,60 @@ spec:
     tag: "<<IMAGE TAG>>" 
   route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
 ```
+
+If you haven't used the "route" option in the Aqua CSP CR, you should define a Route manually to enable external access to the Aqua Server (Console).
+
+#### Example : Deploying Aqua Server 
+
+Here is an example of a simple deployment: 
+```yaml
+---
+apiVersion: operator.aquasec.com/v1alpha1
+kind: AquaCsp
+metadata:
+  name: aqua
+  namespace: aqua
+spec:
+  infra:                                    
+    serviceAccount: "aqua-sa"               
+    namespace: "aqua"                       
+    version: "5.3"                          
+    requirements: true                      
+  common:
+    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    dbDiskSize: 10
+    databaseSecret:                         # Optional: If already created database secret then mention in here
+      key: "db-password"
+      name: "aqua-database-password"      
+  database:                                 
+    replicas: 1                            
+    service: "ClusterIP"
+    image:
+      registry: "registry.aquasec.com"
+      repository: "database"
+      tag: "<<IMAGE TAG>>"
+      pullPolicy: Always                    
+  gateway:                                  
+    replicas: 1                             
+    service: "ClusterIP"
+    image:
+      registry: "registry.aquasec.com"
+      repository: "gateway"
+      tag: "<<IMAGE TAG>>"
+      pullPolicy: Always                     
+  server:                                   
+    replicas: 1                             
+    service: "LoadBalancer" 
+    image:
+      registry: "registry.aquasec.com"
+      repository: "server"
+      tag: "<<IMAGE TAG>>"
+      pullPolicy: Always  
+  route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
+```
+
+If you haven't used the "route" option in the Aqua CSP CR, you should define a Route manually to enable external access to the Aqua Server (Console).
+
 
 
 #### Example: Deploying AquaCsp with split database
