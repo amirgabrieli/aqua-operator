@@ -36,11 +36,34 @@ You can list the secrets in the custom resource YAML files or you can define the
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
-oc secrets add aqua-sa aqua-registry --for=pull -n aqua
+oc secrets link aqua-sa aqua-registry --for=pull -n aqua
 ```
 
-There are several options for deploying the Aqua CSP custom resources. You can review the different options in [this file](https://github.com/aquasecurity/aqua-operator/blob/master/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml).  
-* The Aqua CSP CRD defines how to deploy the Server (Console), Database, and Gateway. 
+## AquaCSP CRDs ##
+The AquaCSP Operator includes the following CRDs -
+
+**AquaCSP** provides the fastest methods to deploy Aqua in a single cluster. AquaCSP defines how to deploy the server, Kube-Enforcer, and Enforcer in the target cluseter. Please see the example [CR](https://github.com/aquasecurity/aqua-operator/blob/5.3/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurrtions.
+* You can set the enforcement mode using the "enforcerMode" properties in the CR file.
+* You can deploy a Route by setting the "route" property to "true".
+* The default service type for the console and gateway is ClusterIP. You can change this to a different service type.
+* You can choose to deploy a different version of Aqua CSP by setting the "version" property or change the image "tag".
+* You can choose to use an external databaes providing the 'externalDb' details.
+* You can omit the Enforcer and Kube-Enforcer components by removing them from the CR.
+
+**AquaKubeEnforcer** is used to deploy the KubeEnforcer in any cluster. Please see the example [CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquakubeenforcer_cr.yaml)
+* You need to provide a token to identify the KubeEnforcer
+* You can set the target gateway using the **config.gateway_address** property
+* You can choose to deploy a different version of the KubeEnforcer by setting the **image.tag** property
+
+**AquaEnforcer**
+is used to deploy the AquaEnforcer in any cluster. Please see the example [CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml)
+* You need to provide a token to identify the AquaEnforcer
+* You can set the target gateway using the **gateway.host** and **gateway.port** properties
+* You can choose to deploy a different version of the AquaEnforcer by setting the **image.tag** property
+
+****
+
+
 * You can instruct the Aqua CSP CR to automatically deploy the Enforcer by setting the "enforcer" and "enforcerMode" properties in the CR file.
 * You can also instruct the Aqua CSP CR to automatically deploy the KubeEnforcer by setting the "kubeEnforcer" property in the CR file (with "registry" and "tag").  
 * If you want to deploy the Enforcers manually, you will need to first get a security token. Access Aqua console and create a new Enforcer Group. Copy the group's "token" and use it in the AquaEnforcer/AquaKubeEnforcer CR (see the example below).
