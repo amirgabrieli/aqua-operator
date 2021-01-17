@@ -22,7 +22,7 @@ It is advised that you read about the [Aqua Environment and Configuration](https
 1. Create a new namespace/project called "aqua" for the Aqua deployment.
 2. Install the Aqua Operator from Red Hat's OperatorHub and deploy it to the "aqua" namespace. 
 
-## Prepare your environment
+## Preparing the environment to run Aqua 
 
 1. Run the following commands to set the RBAC for the service-account
 ```bash
