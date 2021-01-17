@@ -23,9 +23,15 @@ It is advised that you read about the [Aqua Environment and Configuration](https
 2. Install the Aqua Operator from Red Hat's OperatorHub and deploy it to the "aqua" namespace. 
 
 ## Prepare your environment
-First, make sure to set the requirements that are specified [here](FirstSteps.md)
 
-Before you start, you will need to supply two secrets for the deployment: 
+1. Run the following commands to set the RBAC for the service-account
+```bash
+oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccount:aqua:aqua-sa -n aqua
+oc adm policy add-scc-to-user privileged system:serviceaccount:aqua:aqua-sa -n aqua
+oc adm policy add-scc-to-user hostaccess system:serviceaccount:aqua:aqua-sa -n aqua
+```
+
+2. Set secrets for for the deployment: 
 * A secret for the Docker registry
 * A secret for the database
 
