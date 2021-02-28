@@ -1,3 +1,5 @@
+## General 
+
 This guide explains how to deploy and use the Aqua Security Operator to manage Aqua's deployments in an OpenShift 4.x enviornemnt. You can use the Operator to deploy Aqua Entperiese or any of its components -
 * Server (aka “console”)
 * Database (optional; you can map an external database as well) 
