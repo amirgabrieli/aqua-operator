@@ -1,4 +1,4 @@
-This guide explains how to deploy and use the Aqua Security Operator to manage Aqua's deployments in an OpenShift 4.x enviornemnt. You can use the Operator to deploy Aqua Entperiese or any of the  components -
+This guide explains how to deploy and use the Aqua Security Operator to manage Aqua's deployments in an OpenShift 4.x enviornemnt. You can use the Operator to deploy Aqua Entperiese or any of its components -
 * Server (aka “console”)
 * Database (optional; you can map an external database as well) 
 * Gateway 
@@ -23,8 +23,8 @@ It is advised that you read about the [Aqua Environment and Configuration](https
 ## Types of Aqua Opertaor
 There are three types of Aqua Operators:
 * Marketplace - The marketplace operator is purchased through Red Hat Marketplace.
-* Community - Aqua's offical Operator before it was verified by Red Hat. It typically represtens the latest and newest version of the Operator. 
-* Certified - Aqua's offical Operator that is vetted and tested by Red Hat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images that are vetted by RedHat. 
+* Community - Aqua's offical Operator. It typically represtens the latest and newest version of the Operator. 
+* Certified - Aqua's offical Operator vetted and certified by Red Hat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
 
 
 ## Deploying the Aqua Operator
@@ -34,7 +34,7 @@ There are three types of Aqua Operators:
 ```
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 ```
-3.For the community Operator you will also need to create a secret to the Aqua's images registry based on your username and password for Aqua's supprot portal (https://success.aquasec.com.) -
+3. For the community Operator you will also need to create a secret to the Aqua's images registry based on your username and password for Aqua's supprot portal (https://success.aquasec.com.) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 oc secrets add aqua-sa aqua-registry --for=pull -n aqua
@@ -42,7 +42,7 @@ oc secrets add aqua-sa aqua-registry --for=pull -n aqua
 4. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
 
 ## Deploying Aqua Enterprise using Custom Resources
-The AquaCSP Operator includes the following CRDs that you can choose from to stand-up Aqua in your cluster. Before you create your deployment CR, pleaes review the CR examples we've prepared for common deployment configuration, in the next section.
+The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configuraions. Before you create your deployment CR, pleaes review the CR examples in the next section that we've prepared for common deployment configuration.
 
 **[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods to deploy Aqua Enterprise in a single cluster. AquaCSP defines how to deploy the Server, Gateway, Aqua Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurations.
 * You can set the enforcement mode using the "enforcerMode" property in the CR file.
@@ -51,8 +51,6 @@ The AquaCSP Operator includes the following CRDs that you can choose from to sta
 * You can choose to deploy a different version of Aqua CSP by setting the "version" property or change the image "tag".
 * You can choose to use an external database by providing the 'externalDb' property details.
 * You can omit the Enforcer and KubeEnforcer components by removing them from the CR.
-
-The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for advanced configurations where the server components are deployed across multiple clusters.
 
 **[AquaEnforcer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml)** is used to deploy the Aqua Enforcer in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml) for the listing of all fields and configurations.
 * You need to provide a token to identify the Aqua Enforcer.
@@ -69,11 +67,11 @@ The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/
 * You need to provide the **login.username** and **login.password** to authenticate with the Aqua Server.
 * You can choose to deploy a different version of the Aqua Scanner by setting the **image.tag** property.
 
+The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for advanced configurations where the server components are deployed across multiple clusters.
 
-##  SecurityContextConstraints for Aqua components ##
-When installing the Aqua operator, the operator creates a cluster role binding between the "aqua-sa" 
-and "aqua-kube-enforcer-sa" service accounts to cluster roles containing the SecurityContextConstraints (SCC)
-for running the Aqua components.
+
+##  Deploying the Community Operator in a non-privilged mode ##
+When installing the Aqua operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components.
 
 By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
 SCCs.
