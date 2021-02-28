@@ -40,7 +40,6 @@ oc create secret generic aqua-database-password --from-literal=db-password=<pass
 3. For the community Operator you will also need to create a secret to the Aqua's images registry based on your username and password for Aqua's supprot portal (https://success.aquasec.com.) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
-oc secrets add aqua-sa aqua-registry --for=pull -n aqua
 ```
 
 4. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
