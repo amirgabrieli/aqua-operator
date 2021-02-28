@@ -22,23 +22,25 @@ It is advised that you read about the [Aqua Environment and Configuration](https
 
 ## Types of Aqua Opertaor
 There are three types of Aqua Operators:
-* Marketplace - The marketplace operator is purchased through Red Hat Marketplace.
-* Community - Aqua's offical Operator. It typically represtens the latest and newest version of the Operator. 
-* Certified - Aqua's offical Operator vetted and certified by Red Hat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
+* **Marketplace** - The marketplace operator is purchased through Red Hat Marketplace.
+* **Community** - Aqua's offical Operator. It typically represtens the latest and newest version of the Operator. 
+* **Certified** - Aqua's offical Operator vetted and certified by Red Hat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
 
 
 ## Deploying the Aqua Operator
-
 1. Create a new namespace/project called "aqua" for the Aqua deployment.
+
 2. Create a secret for the database password
 ```
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 ```
+
 3. For the community Operator you will also need to create a secret to the Aqua's images registry based on your username and password for Aqua's supprot portal (https://success.aquasec.com.) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 oc secrets add aqua-sa aqua-registry --for=pull -n aqua
 ```
+
 4. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
 
 ## Deploying Aqua Enterprise using Custom Resources
@@ -95,6 +97,7 @@ You can run the community operator in non-privilged mode by creating a custom SC
 ```bash
 oc apply -f https://raw.githubusercontent.com/aquasecurity/aqua-operator/5.3.0/deploy/aqua-scc.yaml
 ```
+
 2. Change the cluster role which is bind to "aqua-sa" to use "aqua-scc" SCC, and the cluster role which is bind to "aqua-kube-enforcer-sa" to use "nonroot" and "hostaccess" SCCs. Edit the section  - ```.rules.resourceNames``` in the cluster role YAML file. 
 
 3. Run the AquaCSP/AquaServer/AquaGateway/AquaDatabase/AquaEnforcer/AquaScanner CRs with ```.spec.runAsNonRoot:true``` .  
