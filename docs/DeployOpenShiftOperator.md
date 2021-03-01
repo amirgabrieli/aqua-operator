@@ -92,14 +92,15 @@ SCCs.
 If you want to run the community operator in non-privilged mode then you will need to create a new custom SCC (called "aqua-scc") and modify Aqua's ClusterRole to use it. 
 Follow these steps to run Aqua in "non-privilged" 0  
 
-1. Create the aqua-scc:
+1. Download the [aqua-scc](../deploy/aqua-scc.yaml) SCC file and use 'oc apply' to create it.
+
 ```bash
-oc apply -f https://raw.githubusercontent.com/aquasecurity/aqua-operator/5.3.0/deploy/aqua-scc.yaml
+oc apply -f <<AQUA SCC FILE PATH>>
 ```
 
-2. Change the cluster role which is bind to "aqua-sa" to use "aqua-scc" SCC, and the cluster role which is bind to "aqua-kube-enforcer-sa" to use "nonroot" and "hostaccess" SCCs. Edit the section  - ```.rules.resourceNames``` in the cluster role YAML file. 
+2. Change the cluster role which is bind to "aqua-sa" to use "aqua-scc" SCC, and the cluster role which is bind to "aqua-kube-enforcer-sa" to use "nonroot" and "hostaccess" SCCs. Edit the cluster role YAML file and update the ```.rules.resourceNames``` section in the file. 
 
-3. Run the AquaCSP/AquaServer/AquaGateway/AquaDatabase/AquaEnforcer/AquaScanner CRs with ```.spec.runAsNonRoot:true``` .  
+3. Make sure to deploy Aqua in non-root mode by updateing property  'runAsNonRoot' in CustomResource to ture e.g.  ```.spec.runAsNonRoot:true``` .  
  
 	
 ## CR Examples ##
