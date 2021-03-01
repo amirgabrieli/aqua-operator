@@ -21,7 +21,7 @@ The **aqua-operator** is a group of controllers that runs within a Kubernetes or
 * CSP (Package of Server, Gateway and Database)
 
 **Use the aqua-operator to:**
- * Deploy Aqua Security components on Kubernetes or Openshift
+ * Deploy Aqua Security components in Openshift clusters
  * Scale up Aqua Security components with extra replicas
  * Assign metadata tags to Aqua Security components
 
