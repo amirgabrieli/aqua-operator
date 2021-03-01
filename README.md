@@ -27,17 +27,14 @@ The **aqua-operator** is a group of controllers that runs within a Kubernetes or
 
 ## Deployment Requirements
 
-The Operator deploys on Kubernetes and Openshift clusters.
+The Operator is desinged for Openshift clusters.
 
-* **Kubernetes:**  1.11.0 +
-* **Openshift:** 3.11 +
+* **Openshift:** 4.0 +
 
 ## Documentation
 
 The following documentation is provided:
 
-- [Installation](docs/Installation.md)
-- [First Steps](docs/FirstSteps.md)
 - [OpenShift installation and examples](docs/DeployOpenShiftOperator.md)
 - [Official Aqua Security Docs Site](https://docs.aquasec.com/)
 - [Operator Hub Aqua](https://operatorhub.io/operator/aqua)
