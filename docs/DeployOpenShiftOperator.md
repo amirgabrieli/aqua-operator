@@ -23,10 +23,10 @@ Make sure you have a license and access to the Aqua registry. To obtain a licens
 It is advised that you read about the [Aqua Environment and Configuration](https://docs.aquasec.com/docs/purpose-of-this-section) and [Aqua's sizing guide](https://docs.aquasec.com/docs/sizing-guide) before deploying and using the Operator. 
 
 ## Types of Aqua Opertaor
-There are three types of Aqua Operators:
+Aqua Security maintans three types of Operators:
 * **Marketplace** - The marketplace operator is purchased through Red Hat Marketplace.
 * **Community** - Aqua's offical Operator. It typically represtens the latest and newest version of the Operator. 
-* **Certified** - Aqua's offical Operator vetted and certified by Red Hat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
+* **Certified** - Aqua's offical Operator vetted and certified by RedHat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
 
 
 ## Deploying the Aqua Operator
@@ -37,7 +37,7 @@ There are three types of Aqua Operators:
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 ```
 
-3. For the community Operator you will also need to create a secret to the Aqua's images registry based on your username and password for Aqua's supprot portal (https://success.aquasec.com.) -
+3. To work with the community Operator, you need to create a registry secret to Aqua's images registry. Aqua's registry credentials are identical to the username and password for Aqua's supprot portal (https://success.aquasec.com.) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 ```
@@ -45,7 +45,7 @@ oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.
 4. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
 
 ## Deploying Aqua Enterprise using Custom Resources
-The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configuraions. Before you create your deployment CR, pleaes review the CR examples in the next section that we've prepared for common deployment configuration.
+The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configuraions. Before you create your deployment CR, pleaes review commons CR examples in the section *CR Examples* below.
 
 **[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods to deploy Aqua Enterprise in a single cluster. AquaCSP defines how to deploy the Server, Gateway, Aqua Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurations.
 * You can set the enforcement mode using the "enforcerMode" property in the CR file.
@@ -74,9 +74,7 @@ The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/
 
 
 ##  Deploying the Community Operator in a non-privilged mode ##
-When installing the Aqua operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components.
-
-By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
+When installing the Aqua's community operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components. By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
 SCCs.
 ```yaml
 - rules:
@@ -91,8 +89,8 @@ SCCs.
         - use
 ```
 
-
-You can run the community operator in non-privilged mode by creating a custom SCC for Aqua called "aqua-scc" - 
+If you want to run the community operator in non-privilged mode then you will need to create a new custom SCC (called "aqua-scc") and modify Aqua's ClusterRole to use it. 
+Follow these steps to run Aqua in "non-privilged" 0  
 
 1. Create the aqua-scc:
 ```bash
