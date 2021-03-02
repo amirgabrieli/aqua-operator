@@ -74,8 +74,9 @@ The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/
 
 
 ##  Deploying the Community Operator in a non-privilged mode ##
-When installing the Aqua's community operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components. By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
+When installing the Aqua's community operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to privilged cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components. By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
 SCCs.
+
 ```yaml
 - rules:
     - apiGroups:
