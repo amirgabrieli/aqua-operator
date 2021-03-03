@@ -70,22 +70,7 @@ The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different c
 * You need to provide the **login.username** and **login.password** to authenticate with the Aqua Server.
 * You can choose to deploy a different version of the Aqua Scanner by setting the **image.tag** property.
 
-The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for advanced configurations where the server components are deployed across multiple clusters.
-
-
-##  Deploying the Community Operator in a non-privilged mode ##
-By Default the Operator uses the 'privileged' SCC (SecurityContextConstraints) for the Operator service-account. If you want to deploy the Community Operator in a **non-privilged** mode, you can follow the following manual steps - 
-
-1. Download the [aqua-scc](../deploy/aqua-scc.yaml) SCC file and use 'oc apply' to create it.
-
-```bash
-oc apply -f <<AQUA SCC FILE PATH>>
-```
-
-2. Change the ClusterRol,e which is bind to "aqua-sa", to use  the new"aqua-scc" SCC, and the cluster role, which is bind to "aqua-kube-enforcer-sa", to use "nonroot" and "hostaccess" SCCs. Edit the relevant ClusterRole YAML file and update the ```.rules.resourceNames``` section to point to the respective SCCs. 
-
-3. Deploy Aqua in non-root mode by setting the Aqua CRD property 'runAsNonRoot'  to 'true' e.g.  ```.spec.runAsNonRoot:true``` .  
- 
+The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for modular configurations where the server components are deployed across multiple clusters.
 	
 ## CR Examples ##
 
