@@ -32,17 +32,17 @@ Aqua Security maintans three types of Operators:
 ## Deploying the Aqua Operator
 1. Create a new namespace/project called "aqua" for the Aqua deployment.
 
-2. Create a secret for the database password
+2. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
+
+3. Create a secret for the database password
 ```
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 ```
 
-3. To work with the community Operator, you need to create a registry secret to Aqua's images registry. Aqua's registry credentials are identical to the username and password for Aqua's supprot portal (https://success.aquasec.com.) -
+4. To work with the community Operator, you need to create a registry secret to Aqua's images registry. Aqua's registry credentials are identical to the username and password for Aqua's supprot portal (https://success.aquasec.com.) -
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 ```
-
-4. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
 
 ## Deploying Aqua Enterprise using Custom Resources
 The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configuraions. Before you create your deployment CR, pleaes review commons CR examples in the section *CR Examples* below.
