@@ -74,24 +74,7 @@ The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/
 
 
 ##  Deploying the Community Operator in a non-privilged mode ##
-When installing the Aqua's community operator, the operator creates a cluster role binding between the "aqua-sa" and "aqua-kube-enforcer-sa" service accounts to privilged cluster roles containing the SecurityContextConstraints (SCC) for running the Aqua components. By default, the SCCs for running Aqua components are the "privileged" and "hostaccess"
-SCCs.
-
-```yaml
-- rules:
-    - apiGroups:
-        - security.openshift.io
-      resourceNames:
-        - privileged
-        - hostaccess
-      resources:
-        - securitycontextconstraints
-      verbs:
-        - use
-```
-
-If you want to run the community operator in non-privilged mode then you need to create a new custom SCC (called "aqua-scc") and modify Aqua's ClusterRole to use it. 
-Follow these steps to run the Aqua Operator in "non-privilged" mode - 
+By Default the Operator uses the 'privileged' SCC (SecurityContextConstraints) for the Operator service-account. If you want to deploy the Community Operator in a **non-privilged** mode, you can follow the following manual steps - 
 
 1. Download the [aqua-scc](../deploy/aqua-scc.yaml) SCC file and use 'oc apply' to create it.
 
@@ -99,9 +82,9 @@ Follow these steps to run the Aqua Operator in "non-privilged" mode -
 oc apply -f <<AQUA SCC FILE PATH>>
 ```
 
-2. Change the ClusterRole which is bind to "aqua-sa" to use "aqua-scc" SCC, and the cluster role which is bind to "aqua-kube-enforcer-sa" to use "nonroot" and "hostaccess" SCCs. Edit the relevant ClusterRole YAML file and update the ```.rules.resourceNames``` section to point to the respective SCCs. 
+2. Change the ClusterRol,e which is bind to "aqua-sa", to use  the new"aqua-scc" SCC, and the cluster role, which is bind to "aqua-kube-enforcer-sa", to use "nonroot" and "hostaccess" SCCs. Edit the relevant ClusterRole YAML file and update the ```.rules.resourceNames``` section to point to the respective SCCs. 
 
-3. Deploy Aqua in non-root mode by setting the property 'runAsNonRoot'  to 'true' in relevant CustomResource e.g.  ```.spec.runAsNonRoot:true``` .  
+3. Deploy Aqua in non-root mode by setting the Aqua CRD property 'runAsNonRoot'  to 'true' e.g.  ```.spec.runAsNonRoot:true``` .  
  
 	
 ## CR Examples ##
