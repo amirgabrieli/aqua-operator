@@ -1,59 +1,61 @@
 ## General 
 
-This guide explains how to deploy and use the Aqua Security Operator to manage Aqua's deployments in an OpenShift 4.x enviornemnt. You can use the Operator to deploy Aqua Entperiese or any of its components -
-* Server (aka “console”)
-* Database (optional; you can map an external database as well) 
-* Gateway 
-* Enforcer
+This guide explains how to deploy and use the Aqua Security Operator to manage deployments of Aqua Enterprise in an OpenShift 4.x environment. You can use the Operator to deploy Aqua Enterprise or any of its components:
+* Server (Console)
+* Gateway
+* Database
+* Aqua Enforcer
 * Scanner
 * KubeEnforcer
 
 Use the Aqua Operator to: 
 * Easily deploy Aqua Enterprise on OpenShift
-* Manage and scale up Aqua security components with additional replicas
+* Manage and scale up Aqua Enterprise components with additional replicas
 * Assign metadata tags to Aqua Enterprise components
-* Easily add and delete Aqua components like Scanner daemons, Kube-Enforcers and Enforcers
+* Easily add and delete Aqua Enterprise components like Scanner daemons, Aqua Enforcers, and KubeEnforcers
 	
-You can find all Aqua's Operator CRs and thier properities at [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/5.3.0/deploy/crds). 
+You can find all Aqua Operator CRs and their properties in [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/5.3.0/deploy/crds). 
    
 ## Prerequisites 
 
-Make sure you have a license and access to the Aqua registry. To obtain a license, please contact Aqua Security at https://www.aquasec.com/about-us/contact-us/.
+Make sure you have a license and access to the Aqua Security registry. To obtain a license, please contact Aqua Security at https://www.aquasec.com/about-us/contact-us/.
 
-It is advised that you read about the [Aqua Environment and Configuration](https://docs.aquasec.com/docs/purpose-of-this-section) and [Aqua's sizing guide](https://docs.aquasec.com/docs/sizing-guide) before deploying and using the Operator. 
+It is advised that you read about the [Aqua Environment and Configuration](https://docs.aquasec.com/v5.3/docs/purpose-of-this-section) and the [Aqua Enterprise Sizing Guide](https://docs.aquasec.com/v5.3/docs/sizing-guide) before deploying and using the Operator.
 
-## Types of Aqua Opertaor
-Aqua Security maintans three types of Operators:
-* **Marketplace** - The marketplace operator is purchased through Red Hat Marketplace.
-* **Community** - Aqua's offical Operator. It typically represtens the latest and newest version of the Operator. 
-* **Certified** - Aqua's offical Operator vetted and certified by RedHat. The certfitied Operator is based on the latest cummunity Operator. It is packaged in a mode that allows it to work in disconnected networks, and containts UBI images as part of the package. 
+## Types of Aqua Operators
 
+Aqua Security maintains three types of Operators:
+* **Marketplace Operator:** purchased through the Red Hat Marketplace.
+* **Community Operator:** Aqua Security's official Operator. It typically represents the latest version of the Operator. 
+* **Certified Operator:** Aqua Security's official Operator, certified by Red Hat. The Certified Operator is based on the latest community Operator. It is packaged in a mode that allows it to work in disconnected networks, and contains UBI images.
 
 ## Deploying the Aqua Operator
+
 1. Create a new namespace/project called "aqua" for the Aqua deployment.
 
 2. Install the Aqua Operator from Red Hat's OperatorHub and add it to the "aqua" namespace. 
 
-3. Create a secret for the database password
+3. Create a secret for the database password:
 ```
 oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua
 ```
 
-4. To work with the community Operator, you need to create a registry secret to Aqua's images registry. Aqua's registry credentials are identical to the username and password for Aqua's supprot portal (https://success.aquasec.com.) -
+4. To work with the Community Operator, you need to create a registry secret for the Aqua Security image registry. Registry credentials are identical to the username and password for Aqua's support portal (https://success.aquasec.com).
 ```bash
 oc create secret docker-registry aqua-registry --docker-server=registry.aquasec.com --docker-username=<AQUA_USERNAME> --docker-password=<AQUA_PASSWORD> --docker-email=<user email> -n aqua
 ```
 
 ## Deploying Aqua Enterprise using Custom Resources
-The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configuraions. Before you create your deployment CR, pleaes review commons CR examples in the section *CR Examples* below.
 
-**[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods to deploy Aqua Enterprise in a single cluster. AquaCSP defines how to deploy the Server, Gateway, Aqua Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurations.
+The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different configurations. Before you create your deployment CR, please review the CR examples in the section *CR Examples* below.
+
+**[AquaCSP CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml)** provides the fastest methods for deploying Aqua Enterprise in a single cluster. AquaCSP defines how to deploy the Server, Gateway, Aqua Enforcer, and KubeEnforcer in the target cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquacsp_cr.yaml) for the listing of all fields and configurations.
 * You can set the enforcement mode using the "enforcerMode" property in the CR file.
 * You can deploy a Route by setting the "route" property to "true".
 * The default service type for the Console and Gateway is ClusterIP. You can change the service type in the CR.
-* You can choose to deploy a different version of Aqua CSP by setting the "version" property or change the image "tag".
+* You can choose to deploy a different version of Aqua Enterprise by setting the "version" property or changing the image "tag".
 * You can choose to use an external database by providing the 'externalDb' property details.
-* You can omit the Enforcer and KubeEnforcer components by removing them from the CR.
+* You can omit deployment of the Enforcer and KubeEnforcer components by removing them from the CR.
 
 **[AquaEnforcer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml)** is used to deploy the Aqua Enforcer in any cluster. Please see the [example CR](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaenforcer_cr.yaml) for the listing of all fields and configurations.
 * You need to provide a token to identify the Aqua Enforcer.
@@ -70,7 +72,7 @@ The Aqua Operator includes a few CRDs to allow you to deploy Aqua in different c
 * You need to provide the **login.username** and **login.password** to authenticate with the Aqua Server.
 * You can choose to deploy a different version of the Aqua Scanner by setting the **image.tag** property.
 
-The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for modular configurations where the server components are deployed across multiple clusters.
+The **[AquaServer CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquaserver_cr.yaml)**, **[AquaDatabase CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquadatabase_cr.yaml)**, and **[AquaGateway CRD](https://github.com/aquasecurity/aqua-operator/blob/5.3.0/deploy/crds/operator_v1alpha1_aquagateway_cr.yaml)** are used for modular configurations where the Server components are deployed across multiple clusters.
 	
 ## CR Examples ##
 
@@ -90,9 +92,9 @@ spec:
     version: "5.3"                          
     requirements: true                      
   common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
     dbDiskSize: 10
-    databaseSecret:                         # Optional: If already created database secret then mention in here
+    databaseSecret:                         # Optional: If a database secret has already been created, mention it here
       key: "db-password"
       name: "aqua-database-password"      
   database:                                 
@@ -145,9 +147,9 @@ spec:
     version: "5.3"                          
     requirements: true                      
   common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
     dbDiskSize: 10
-    databaseSecret:                         # Optional: If already created database secret then mention in here
+    databaseSecret:                         # Optional: If a database secret has already been created, mention it here
       key: "db-password"
       name: "aqua-database-password"      
   database:                                 
@@ -174,12 +176,12 @@ spec:
       repository: "server"
       tag: "<<IMAGE TAG>>"
       pullPolicy: Always  
-  route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the console
+  route: true                               # Optional: If defined and set to true, the Operator will create a Route to enable access to the Aqua Server (Console)
 ```
 
-If you haven't used the "route" option in the Aqua CSP CR, you should define a Route manually to enable external access to the Aqua Server (Console).
+If you haven't used the "route" option in the Aqua CSP CR, you should define a Route manually to enable external access to the Aqua Server (Console)
 
-#### Example: Deploying Aqua Enterprise with split database
+#### Example: Deploying Aqua Enterprise with a split database
 
 "Split database" means there is a separate database for audit-related data: 
 ```yaml
@@ -196,9 +198,9 @@ spec:
     version: "5.3"                          
     requirements: true                      
   common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
     dbDiskSize: 10
-    databaseSecret:                         # Optional: If already created database secret then mention in here
+    databaseSecret:                         # Optional: If a database secret has already been created, mention it here
       key: "db-password"
       name: "aqua-database-password"
     splitDB: true      
@@ -245,7 +247,7 @@ spec:
     version: "5.3"                          
     requirements: true                      
   common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
     dbDiskSize: 10      
   externalDb:
     host: "<<EXTERNAL DATABASE IP>>"
@@ -287,7 +289,7 @@ spec:
     version: "5.3"                          
     requirements: true                      
   common:
-    imagePullSecret: "aqua-registry"        # Optional: If already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
     dbDiskSize: 10
     splitDB: true      
   externalDb:
@@ -301,7 +303,7 @@ spec:
       port: "<<AUDIT EXTERNAL DB PORT>>"
       username: "<<AUDIT EXTERNAL DB USER NAME>>"
       password: "<<AUDIT EXTERNAL DB PASSWORD>>"  # Optional: you can specify the database password secret in auditDB.secret
-    secret:                                       # Optional: the secret that hold the audit database password. will create one if not provided
+    secret:                                       # Optional: the secret that holds the audit database password; one will be created if not provided
       key: 
       name:                     
   gateway:                                  
@@ -337,9 +339,9 @@ metadata:
 spec:
   infra:                                    
     serviceAccount: "aqua-sa"                
-    version: "5.3"                          # Optional: auto generate to latest version
+    version: "5.3"                          # Optional: auto-generate to latest version
   common:
-    imagePullSecret: "aqua-registry"        # Optional: if already created image pull secret then mention in here
+    imagePullSecret: "aqua-registry"        # Optional: If an image pull secret has already been created, mention it here
   deploy:                                   # Optional: information about Aqua Enforcer deployment
     image:                                  # Optional: take the default value and version from infra.version
       repository: "enforcer"                # Optional: default = enforcer
